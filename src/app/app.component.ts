@@ -37,6 +37,8 @@ export class AppComponent {
       },
       (error) => {
         console.error('Error getting user data:', error);
+        this.router.navigate(['/auth']);
+
       }
     );
     // Проверяем токен при загрузке приложения

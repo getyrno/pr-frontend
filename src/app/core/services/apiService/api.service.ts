@@ -24,8 +24,6 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/auth/register-user`, data)
       .pipe(
         tap(() => {
-          // После успешной регистрации перенаправляем пользователя на главную страницу
-          this.router.navigate(['./main']);
         }),
         catchError(error => {
           // Обработка ошибок, если они есть

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Injector, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { ApiService } from '../../services/apiService/api.service';
 import { Router } from '@angular/router';
 import { TuiAlertService, TuiPrimitiveTextfieldModule, TuiButtonModule, TuiAlertModule } from '@taiga-ui/core';
 import { TuiLoaderModule } from '@taiga-ui/core/components/loader';
 import { NgIf, NgFor } from '@angular/common';
 import { TuiInputModule } from '@taiga-ui/kit';
+import { AuthService } from '../../services/AuthService/auth-service.service';
 
 @Component({
     selector: 'app-profile-creation',
@@ -25,34 +26,38 @@ import { TuiInputModule } from '@taiga-ui/kit';
     ],
 })
 export class ProfileCreationComponent implements OnInit {
-  @Input() phoneNumber!: string | undefined; // Declare phoneNumber input property
-  ProfileForm!: FormGroup; // Declare ProfileForm property
+  @Input() phoneNumber!: string | undefined;
+  ProfileForm!: FormGroup;
   loading = false;
   formSubmitted = false;
-  show = false;
   errorMessages: string[] = [];
+  show = false;
 
   constructor(
+    private fb: FormBuilder,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private apiService: ApiService,
+    private authService: AuthService
   ) {}
-
-
 
   ngOnInit(): void {
     console.log("phoneNumber:", this.phoneNumber);
-    this.ProfileForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      phone: new FormControl({value: this.phoneNumber, disabled: true}),
-      email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required])
+    this.initForm();
+  }
+
+  private initForm(): void {
+    this.ProfileForm = this.fb.group({
+      username: ['', Validators.required],
+      phone: [{ value: this.phoneNumber, disabled: true }],
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     });
   }
 
   submitForm(): void {
-    if (this.ProfileForm.valid) {
+    if (this.ProfileForm.valid && this.passwordMatchValidator()) {
       this.loading = true;
       console.log('Form submitted!', this.ProfileForm.value);
 
@@ -60,59 +65,63 @@ export class ProfileCreationComponent implements OnInit {
         username: this.ProfileForm.get('username')?.value,
         phone: this.ProfileForm.get('phone')?.value,
         email: this.ProfileForm.get('email')?.value,
-        password: this.ProfileForm.get('password')?.value
+        password: this.ProfileForm.get('password')?.value,
       };
 
-      this.apiService.registerUser(userData).subscribe(
-        (response) => {
+      this.apiService.registerUser(userData).subscribe({
+        next: (response) => {
           console.log('User registered successfully!', response);
+          this.loading = false;
+          this.formSubmitted = true;
+          this.cdr.detectChanges();
+          this.authService.setAuthToken(response.token);
+          console.log('response.token =>', response.token);
           this.router.navigate(['/main']); // Или на другой маршрут
         },
-        (error) => {
+        error: (error) => {
           console.error('Failed to register user:', error);
-          // Можно обработать ошибку регистрации
-        }
-      );
-
-      // Остальной код для симуляции API-вызова и обновления состояния компонента
-      setTimeout(() => {
-        this.loading = false;
-        this.formSubmitted = true;
-        this.cdr.detectChanges();
-      }, 3000);
-    } else {
-      // Clear previous error messages
-      this.errorMessages = [];
-
-      // Collect error messages for each form control
-      Object.keys(this.ProfileForm.controls).forEach((key: string) => {
-        const control = this.ProfileForm.get(key);
-        if (control?.errors) {
-          Object.keys(control.errors).forEach((errorKey: string) => {
-            this.errorMessages.push(this.getErrorMessage(key, errorKey));
-          });
+          // Handle registration error
+          this.loading = false;
+          this.cdr.detectChanges();
         }
       });
+    } else {
+      this.errorMessages = this.collectErrorMessages();
     }
   }
 
+  private collectErrorMessages(): string[] {
+    const messages: string[] = [];
+    Object.keys(this.ProfileForm.controls).forEach((key: string) => {
+      const control = this.ProfileForm.get(key);
+      if (control?.errors) {
+        console.log("error:", control?.errors);
+
+        Object.keys(control.errors).forEach((errorKey: string) => {
+          console.log("errorKey:", errorKey);
+          this.show = true;
+          messages.push(this.getErrorMessage(key, errorKey));
+        });
+      }
+    });
+    return messages;
+  }
 
   getErrorMessage(controlName: string, errorKey: string): string {
     const errorMessages: { [key: string]: string } = {
       'username.required': 'Username is required.',
       'email.required': 'Email is required.',
       'email.email': 'Invalid email format.',
-      'passwords.password.required': 'Password is required.',
-      'passwords.confirmPassword.required': 'Confirm password is required.'
+      'password.required': 'Password is required.',
+      'confirmPassword.required': 'Confirm password is required.'
     };
-    this.show = true
-    return errorMessages[`${controlName}.${errorKey}`] || 'Unknown error.';
-}
+    return errorMessages[`${controlName}.${errorKey}`];
+  }
 
-  passwordMatchValidator(formGroup: FormGroup) {
-    const password = formGroup.get('password')?.value;
-    const confirmPassword = formGroup.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+  private passwordMatchValidator(): boolean {
+    const password = this.ProfileForm.get('password')?.value;
+    const confirmPassword = this.ProfileForm.get('confirmPassword')?.value;
+    return password === confirmPassword;
   }
 
   passwordStrengthValidator(control: FormControl) {
@@ -122,8 +131,4 @@ export class ProfileCreationComponent implements OnInit {
       return { weakPassword: true };
     }
   }
-
-
-
-
 }

@@ -93,9 +93,6 @@ submitVerificationCode(value: string) {
         // Пользователь успешно зарегистрирован, выполните необходимые действия
         this.loading = true;
         console.log('User registered successfully!', response);
-        // После успешной регистрации вызываем метод setAuthToken
-        this.authService.setAuthToken(response.token);
-        console.log('response.token =>', response.token);
 
         setTimeout(() => {
           this.loading = false;
@@ -110,7 +107,6 @@ submitVerificationCode(value: string) {
         this.authService.setAuthToken(response.token);
         console.log('response.token =>', response.token);
         this.router.navigate(['/main']); // Или на другой маршрут
-        // Можно предложить войти в систему или выполнить другие действия
       } else if (response.message === 'User data incomplete'){
         // Пользователь успешно зарегистрирован, выполните необходимые действия
         this.loading = true;
