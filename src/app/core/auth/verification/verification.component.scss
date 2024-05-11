@@ -1,0 +1,14 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.scss'; // импорт стилей Taiga UI
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Затемняющий цвет с прозрачностью */
+  z-index: 9999; /* Установите высокий z-index, чтобы оверлей находился поверх всего */
+  display: flex;
+  justify-content: center; /* Выравнивание содержимого по горизонтали по центру */
+  align-items: center; /* Выравнивание содержимого по вертикали по центру */
+}
+

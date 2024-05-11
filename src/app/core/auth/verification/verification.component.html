@@ -1,0 +1,69 @@
+<!-- verification.component.html -->
+<div id="logo" style="display: flex;justify-content: center; ">
+  <img src="../../../../assets/logo.svg" alt="Logo">
+</div>
+<div *ngIf="!CodeSubmitted">
+  <p style="display: flex; align-items: center; justify-content: center;margin-top:20px">
+    <span style="font-size: 32px; margin-right: 10px;">{{ phoneNumber }}</span>
+    <tui-svg (click)="goBackToPhoneNumber()" src="tuiIconEdit" style="cursor: pointer; font-size: 16px;"></tui-svg>
+  </p>
+  <p class="tui-text_body-m" style="text-align: center">We have sent the verification code to your phone number.</p>
+  <form
+      class="b-form"
+      [formGroup]="CodeForm"
+      style="margin-top:20px"
+  >
+      <p>
+          <tui-input
+              formControlName="code"
+              [maskito]="maskCode"
+          >
+              Code
+              <input
+                  inputmode="numeric"
+                  tuiTextfield
+              />
+          </tui-input>
+      </p>
+  </form>
+</div>
+<div *ngIf="loading" class="overlay">
+  <tui-loader [inheritColor]="true"></tui-loader>
+</div>
+<ng-template
+    [tuiAlertOptions]="{
+      label: 'Success',
+      autoClose: true,
+      hasCloseButton: true,
+      status: 'success',
+    }"
+    [(tuiAlert)]="success"
+  >
+  The number is confirmed.
+</ng-template>
+
+<ng-template
+    [tuiAlertOptions]="{
+      label: 'Error',
+      autoClose: true,
+      hasCloseButton: true,
+      status: 'error',
+    }"
+    [(tuiAlert)]="errorCode"
+  >
+  Incorrect Code.
+</ng-template>
+
+<ng-template
+    [tuiAlertOptions]="{
+      label: 'Error',
+      autoClose: true,
+      hasCloseButton: true,
+      status: 'error',
+    }"
+    [(tuiAlert)]="errorCodeFuck"
+  >
+  An error occurred while verifying the code. Please try again.
+</ng-template>
+
+<app-profile-creation *ngIf="CodeSubmitted" [phoneNumber]="phoneNumber"></app-profile-creation>
