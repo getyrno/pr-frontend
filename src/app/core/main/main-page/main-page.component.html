@@ -1,11 +1,27 @@
 <!-- main-page.component.html -->
-<div class="panels-container">
-  <div class="panel">
-    <!-- Content for PanelComponent goes here -->
-    <app-panel></app-panel>
-  </div>
-  <div >
-    <!-- Content for SearchPanelComponent goes here -->
-    <app-search-panel></app-search-panel>
-  </div>
+
+  <div class="panels-container">
+    <div class="panel">
+      <app-panel></app-panel>
+    </div>
+    <div>
+      <div>
+        <app-search-panel></app-search-panel>
+      </div>
+      <div>
+        <app-chat-list></app-chat-list>
+      </div>
+    </div>
+
+    <tui-input
+      tuiTextfieldIconLeft="tuiIconSearchLarge"
+      [tuiTextfieldCleaner]="true"
+      tuiTextfieldSize="m"
+    >
+    Search
+    <input placeholder="Search" tuiTextfield />
+  </tui-input>
+
+
+
 </div>

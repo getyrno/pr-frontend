@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TuiSvgModule } from '@taiga-ui/core';
+import { TuiPrimitiveTextfieldModule, TuiSvgModule, TuiTextfieldControllerModule, TuiTextfieldSizeDirective } from '@taiga-ui/core';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiRootModule } from '@taiga-ui/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
 @Component({
   selector: 'app-search-panel',
   standalone: true,
@@ -14,8 +12,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     TuiInputModule,
     FormsModule,
     ReactiveFormsModule,
-    TuiRootModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TuiTextfieldControllerModule,
+    TuiPrimitiveTextfieldModule
   ],
   templateUrl: './search-panel.component.html',
   styleUrl: './search-panel.component.scss',
@@ -24,5 +23,4 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 })
 export class SearchPanelComponent {
   value = '';
-
 }
