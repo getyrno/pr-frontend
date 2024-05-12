@@ -27,6 +27,10 @@ export class AuthService {
     return this.cookieService.get(this.authTokenKey);
   }
 
+  deleteAuthToken() {
+    this.cookieService.delete(this.authTokenKey); // Удаляем куку авторизации
+  }
+
   checkToken(): Observable<any> {
     const authToken = localStorage.getItem(this.authTokenKey); // Получаем токен из локального хранилища
 

@@ -37,6 +37,7 @@ export class AppComponent {
       },
       (error) => {
         console.error('Error getting user data:', error);
+        // this.authService.deleteAuthToken();
         this.router.navigate(['/auth']);
 
       }
