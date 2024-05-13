@@ -33,7 +33,7 @@ export class AppComponent {
     this.authService.getUserDataFromToken(token).subscribe(
       (userdata) => {
         console.log('userdata =>', userdata);
-        // Здесь вы можете выполнить логику, которая зависит от данных пользователя
+        this.router.navigate(['/main']);
       },
       (error) => {
         console.error('Error getting user data:', error);
@@ -42,14 +42,5 @@ export class AppComponent {
 
       }
     );
-    // Проверяем токен при загрузке приложения
-    const authToken = this.authService.getAuthToken();
-    if (authToken) {
-      // Если токен есть, перенаправляем на главную страницу
-      this.router.navigate(['/main']);
-    } else {
-      // Если токен отсутствует, перенаправляем на страницу аутентификации
-      this.router.navigate(['/auth']);
-    }
   }
 }

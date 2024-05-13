@@ -4,6 +4,7 @@ import { SearchPanelComponent } from './search-panel/search-panel.component';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { TuiRootModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
 import { ChatListComponent } from './chat-list/chat-list.component';
+import { ChatComponent } from './chat/chat.component';
 
 @Component({
     selector: 'app-main-page',
@@ -14,7 +15,8 @@ import { ChatListComponent } from './chat-list/chat-list.component';
       TuiInputModule,
       TuiRootModule,
       ChatListComponent,
-      TuiTextfieldControllerModule
+      TuiTextfieldControllerModule,
+      ChatComponent
     ],
     styleUrl: './main-page.component.scss',
     standalone: true
