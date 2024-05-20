@@ -1,18 +1,28 @@
-<!-- main-page.component.html -->
-
-  <div class="panels-container">
-    <div class="panel">
-      <app-panel></app-panel>
-    </div>
-    <div>
-      <div>
-        <app-search-panel></app-search-panel>
+<div class="panels-container">
+  <div class="panel">
+    <app-panel></app-panel>
+  </div>
+  <div>
+    <div style="border-left: 1px solid #f2f2f2;border-right: 1px solid #f2f2f2; height:100%;">
+      <app-search-panel #searchPanel (searchResults)="updateSearchResults($event)" (focus)="onSearchFocus()" (blur)="onSearchBlur()"></app-search-panel>
+      <div *ngIf="isSearching">
+        <app-search-list [users]="searchResults" [searchPanel]="searchPanel"></app-search-list>
       </div>
-      <div>
+      <div *ngIf="!isSearching">
         <app-chat-list></app-chat-list>
       </div>
     </div>
-
-    <app-chat style="flex-grow: 1; border: 1px solid black;"></app-chat>
-
+  </div>
+  <div class="chat-container">
+    <ng-container *ngIf="selectedChat$ | async as selectedChat; else noChatSelected">
+      <app-chat></app-chat>
+    </ng-container>
+    <ng-template #noChatSelected>
+      <div class="no-chat-ac">
+        <div class="no-chat-selected">
+          <p class="if-not">Select a chat to start messaging</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>

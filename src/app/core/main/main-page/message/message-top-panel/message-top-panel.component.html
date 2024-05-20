@@ -1,0 +1,57 @@
+<div class="top-panel">
+  <!-- Левая часть с именем и статусом -->
+  <div class="left-section">
+    <!-- Стрелочка назад -->
+    <div class="icon-container">
+      <tui-svg
+        src="tuiIconArrowLeftLarge"
+        class="icon"
+        (click)="onBack()"
+        aria-label="Back"
+      ></tui-svg>
+    </div>
+
+    <!-- Текстовый контейнер -->
+    <div class="text-container">
+      <div *ngIf="selectedUser">
+        <div class="user-name">{{ selectedUser.nickname }}</div>
+        <div class="user-status">{{ selectedUser.status }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Правая часть с иконками -->
+  <div class="right-section">
+    <!-- Кнопка для поиска -->
+    <div class="icon-container">
+      <tui-svg
+        src="tuiIconSearchLarge"
+        class="icon"
+        (click)="onSearch()"
+        aria-label="Search"
+      ></tui-svg>
+    </div>
+
+    <!-- Кнопка для правой панели -->
+    <div class="icon-container">
+      <img
+        src="../../../../../assets/layout-left.svg"
+        alt="Layout"
+        class="icon"
+        (click)="onLayoutChange()"
+        aria-label="Change Layout"
+      />
+    </div>
+
+    <!-- Три точки -->
+    <div class="icon-container">
+      <img
+        src="../../../../../assets/three-dots-vertical.svg"
+        alt="More Options"
+        class="icon"
+        (click)="onMoreOptions()"
+        aria-label="More Options"
+      />
+    </div>
+  </div>
+</div>

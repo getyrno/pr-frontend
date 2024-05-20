@@ -1,56 +1,38 @@
 <tui-root>
+  <div class="auth-form">
+    <div *ngIf="!this.formSubmitted">
+      <div id="logo" style="display: flex; justify-content: center;">
+        <img src="../../../assets/logo.svg" alt="Logo">
+      </div>
+      <div class="tui-text_h3" style="justify-content: center; margin-top: 20px; text-align: center">Sparq</div>
 
-<div class="auth-form">
-  <div *ngIf="!this.formSubmitted">
-  <div id="logo" style="display: flex;justify-content: center; ">
-    <img src="../../../assets/logo.svg" alt="Logo">
-  </div>
-  <div class="tui-text_h3" style="justify-content: center; margin-top:20px; text-align: center">Sparq</div>
+      <div style="margin-right: 20px; margin-left: 20px;">
+        <p class="tui-text_body-m" style="text-align: center">Please confirm your country code and enter your phone number.</p>
+        <form class="b-form" [formGroup]="PhoneForm">
+          <tui-input formControlName="phonenumber" (input)="onPhoneNumberInput()">
+            Type your phone number
+            <input autocomplete="tel" tuiTextfield type="phone" />
+          </tui-input>
+        </form>
 
-  <div style="margin-right: 20px; margin-left: 20px;">
-  <p class="tui-text_body-m" style="text-align: center">Please confirm your country code and enter your phone number.</p>
-    <form
-      class="b-form"
-      [formGroup]="PhoneForm"
-    >
-      <tui-input formControlName="phonenumber" (input)="onPhoneNumberInput()">
-        Type your phone number
-        <input
-          autocomplete="tel"
-          tuiTextfield
-          type="phone"
-        />
-      </tui-input>
-    </form>
-
-
-    <div style="margin-top: 20px;"    *ngIf="PhoneForm.valid && !hideButton"
-    >
-      <button
-        style="width:100%;"
-        appearance="accent"
-        tuiButton
-        type="button"
-        class="tui-space_bottom-5"
-        (click)="submitForm()"
-        [disabled]="loading"
-      >
-        <span [hidden]="loading">NEXT</span> <!-- Отображаем текст кнопки, если загрузчик не активен -->
-        <span style="margin-right: 10px;" [hidden]="!loading">WAIT</span> <!-- Отображаем текст кнопки, если загрузчик не активен -->
-        <tui-loader *ngIf="loading" [inheritColor]="true"></tui-loader> <!-- Отображаем загрузчик, если loading === true -->
-      </button>
+        <div style="margin-top: 20px;" *ngIf="PhoneForm.valid && !hideButton">
+          <button
+            style="width: 100%;"
+            appearance="accent"
+            tuiButton
+            type="button"
+            class="tui-space_bottom-5"
+            (click)="submitForm()"
+            [disabled]="loading"
+          >
+            <span [hidden]="loading">NEXT</span>
+            <span style="margin-right: 10px;" [hidden]="!loading">WAIT</span>
+            <tui-loader *ngIf="loading" [inheritColor]="true"></tui-loader>
+          </button>
+        </div>
+      </div>
     </div>
-    </div>
+
+    <app-verification *ngIf="formSubmitted" [phoneNumber]="PhoneForm.get('phonenumber')?.value ?? ''"></app-verification>
   </div>
-
-  <app-verification *ngIf="formSubmitted" [phoneNumber]="PhoneForm.get('phonenumber')?.value ?? ''"></app-verification>
-
-</div>
-
-
 </tui-root>
-    <!-- <form [formGroup]="SignedIn" style="margin-top: 20px;">
-      <tui-checkbox-labeled formControlName="signedin">
-        Keep me signed in
-    </tui-checkbox-labeled>
-    </form> -->

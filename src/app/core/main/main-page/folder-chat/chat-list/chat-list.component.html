@@ -1,0 +1,16 @@
+<!-- src/app/folder-chat/chat-list/chat-list.component.html -->
+<div class="chat-list-container">
+  <tui-scrollbar class="scrollbar">
+    <div *ngIf="personalChats.length > 0 || groupChats.length > 0; else noChats" class="chat-list">
+      <app-chat-list-pattern
+        [personalChats]="personalChats"
+        [groupChats]="groupChats">
+      </app-chat-list-pattern>
+    </div>
+    <ng-template #noChats>
+      <div class="no-chats">
+        <!-- <p>No chats available</p> -->
+      </div>
+    </ng-template>
+  </tui-scrollbar>
+</div>

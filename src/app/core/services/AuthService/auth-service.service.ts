@@ -1,3 +1,4 @@
+// src/app/services/AuthService/auth-service.service.ts
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,53 +11,46 @@ import jwt_decode from 'jwt-decode';
 export class AuthService {
   private authTokenKey = 'authToken';
   private userDataKey = 'userData';
+  private baseUrl = 'http://localhost:3000/api'; // Замените это на ваш адрес сервера
 
   constructor(
     private cookieService: CookieService,
     private http: HttpClient
   ) {}
-  private baseUrl = 'http://localhost:3000/api'; // Замените это на ваш адрес сервера
 
   setAuthToken(token: string) {
-    console.log(1);
-    console.log("cookieService setAuthToken:", token)
     this.cookieService.set(this.authTokenKey, token);
   }
 
-  getAuthToken() {
+  getAuthToken(): string {
     return this.cookieService.get(this.authTokenKey);
   }
 
   deleteAuthToken() {
-    this.cookieService.delete(this.authTokenKey); // Удаляем куку авторизации
+    this.cookieService.delete(this.authTokenKey);
+    localStorage.removeItem('userId'); // Удаление userId из localStorage при выходе
+
   }
 
   checkToken(): Observable<any> {
-    const authToken = localStorage.getItem(this.authTokenKey); // Получаем токен из локального хранилища
-
-    // Устанавливаем заголовки с токеном
+    const authToken = this.getAuthToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${authToken}`
     });
-
-    // Отправляем запрос на сервер
     return this.http.post<any>(`${this.baseUrl}/auth/check-token`, {}, { headers });
   }
 
   getUserDataFromToken(token: string): Observable<UserData | null> {
     try {
-      // Устанавливаем заголовки с токеном
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       });
-
-      // Отправляем запрос на сервер для получения данных пользователя по его идентификатору
       return this.http.post<UserData>(`${this.baseUrl}/token/getdata`, {}, { headers });
     } catch (error) {
       console.error('Error decoding token:', error);
-      return of(null); // Возвращаем пустой Observable в случае ошибки
+      return of(null);
     }
   }
 
@@ -80,8 +74,7 @@ export class AuthService {
 }
 
 interface UserData {
-userId: string;
-username: string;
-isAdmin: boolean;
-// Другие данные о пользователе
+  userId: string;
+  username: string;
+  isAdmin: boolean;
 }

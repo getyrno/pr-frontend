@@ -1,0 +1,50 @@
+.custom-textarea-container {
+  position: relative;
+  width: 100%;
+}
+
+.custom-textarea {
+  width: 100%;
+  height: 21px;
+  max-height: 200px;
+  border: none;
+  border-radius: 0.25rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  line-height: 1.2; /* Устанавливаем line-height, чтобы индикатор ввода и текст были выровнены */
+}
+
+.custom-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.custom-textarea::-webkit-scrollbar {
+  width: 0px;
+}
+
+.custom-textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-textarea::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+label {
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  font-size: 1rem;
+  color: #888;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.placeholder-animate {
+  transform: translateX(100%);
+  opacity: 0;
+}

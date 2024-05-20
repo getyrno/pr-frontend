@@ -1,0 +1,32 @@
+.status-icon {
+  position: absolute;
+  bottom: 5px; /* Adjust as needed */
+  right: 5px; /* Adjust as needed */
+  width: 15px;
+  height: 15px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  font-size: 10px;
+  background-color: #ffffff; /* Optional: to ensure the border is visible */
+  z-index: 999;
+  transition: border-color 0.3s ease;
+}
+
+.custom-container:hover .status-icon {
+  border-color: #E4E4E4; /* Цвет границы при наведении */
+}
+
+.selected .status-icon {
+  bottom: 7px; /* Adjust as needed */
+  right: 7px; /* Adjust as needed */
+  border: 0px;
+
+}
+
+.custom-container:hover {
+  background-color: #E4E4E4;
+}
+
+.selected {
+  background-color: #ff7043;
+}

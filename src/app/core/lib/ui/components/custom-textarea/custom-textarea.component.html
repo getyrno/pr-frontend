@@ -1,0 +1,20 @@
+<div class="custom-textarea-container">
+  <textarea
+    #textarea
+    class="custom-textarea"
+    [style.minHeight]="minHeight"
+    [style.maxHeight]="maxHeight"
+    [style.border]="border"
+    [style.backgroundColor]="backgroundColor"
+    [style.color]="textColor"
+    [style.fontFamily]="fontFamily"
+    [style.fontSize]="fontSize"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    (keydown)="onKeyDown($event)"
+    [value]="value"
+    [disabled]="false"
+  ></textarea>
+  <label [class.placeholder-animate]="value">{{ placeholder }}</label>
+</div>

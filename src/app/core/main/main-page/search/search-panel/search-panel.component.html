@@ -1,0 +1,15 @@
+<div style="width: 450px; height: 70px; display: flex; align-items: center;">
+  <form [formGroup]="searchForm" style="width: 100%;">
+    <tui-input
+      tuiTextfieldSize="m"
+      formControlName="query"
+      (focus)="focus.emit()"
+      (blur)="blur.emit()"
+      (input)="onSearch()"
+      style="width: 100%;"
+    >
+      Search
+      <input placeholder="Search" tuiTextfield />
+    </tui-input>
+  </form>
+</div>

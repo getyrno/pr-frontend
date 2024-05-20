@@ -17,7 +17,19 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, TuiRootModule, TuiInputModule, TuiInputPasswordModule, TuiCheckboxLabeledModule, TuiLinkModule, TuiButtonModule, TuiFieldErrorPipeModule, TuiDialogModule, TuiAlertModule),
+        importProvidersFrom(
+          BrowserModule,
+          AppRoutingModule,
+          ReactiveFormsModule,
+          TuiRootModule,
+          TuiInputModule,
+          TuiInputPasswordModule,
+          TuiCheckboxLabeledModule,
+          TuiLinkModule,
+          TuiButtonModule,
+          TuiFieldErrorPipeModule,
+          TuiDialogModule,
+          TuiAlertModule),
         {
             provide: TUI_ICONS_PATH,
             useValue: tuiIconsPathFactory('assets/taiga-ui/icons/'),

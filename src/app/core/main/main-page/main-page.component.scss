@@ -4,3 +4,38 @@
 }
 
 
+
+
+.chat-container {
+  flex-grow: 1;
+
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+.no-chat-ac {
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+}
+.no-chat-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.if-not {
+  width: 200px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  border: 2px dashed #aaa;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}

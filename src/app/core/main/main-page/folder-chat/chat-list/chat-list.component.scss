@@ -1,0 +1,26 @@
+.custom-container:hover {
+  background-color: #E4E4E4;
+}
+
+.selected {
+  background-color: #ff7043;
+}
+
+.box {
+  overflow: auto; /* Добавляем скролл, если контент превышает размеры блока */
+  height: 93vh;
+}
+
+.visible-scrollbar .ps-scrollbar-y {
+  // Стили для видимого скроллбара
+  opacity: 1;
+}
+
+.ps-scrollbar-y {
+  // Стили для скрытого скроллбара
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+
+

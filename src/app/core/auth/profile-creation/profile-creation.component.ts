@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Injector, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/apiService/api.service';
 import { Router } from '@angular/router';
 import { TuiAlertService, TuiPrimitiveTextfieldModule, TuiButtonModule, TuiAlertModule } from '@taiga-ui/core';
@@ -9,21 +9,21 @@ import { TuiInputModule } from '@taiga-ui/kit';
 import { AuthService } from '../../services/AuthService/auth-service.service';
 
 @Component({
-    selector: 'app-profile-creation',
-    templateUrl: './profile-creation.component.html',
-    styleUrl: './profile-creation.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        TuiInputModule,
-        TuiPrimitiveTextfieldModule,
-        TuiButtonModule,
-        NgIf,
-        TuiLoaderModule,
-        TuiAlertModule,
-        NgFor,
-    ],
+  selector: 'app-profile-creation',
+  templateUrl: './profile-creation.component.html',
+  styleUrls: ['./profile-creation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    TuiInputModule,
+    TuiPrimitiveTextfieldModule,
+    TuiButtonModule,
+    NgIf,
+    TuiLoaderModule,
+    TuiAlertModule,
+    NgFor,
+  ],
 })
 export class ProfileCreationComponent implements OnInit {
   @Input() phoneNumber!: string | undefined;
@@ -32,6 +32,12 @@ export class ProfileCreationComponent implements OnInit {
   formSubmitted = false;
   errorMessages: string[] = [];
   show = false;
+
+  private avatars = [
+    'https://i.pinimg.com/originals/3a/59/f1/3a59f13bbe775518072832cb0f308aa0.png',
+    'https://cdn0.iconfinder.com/data/icons/ecommerce-3-16/32/user_people_person_man-1024.png',
+    'https://www.pngitem.com/pimgs/m/137-1370051_avatar-generic-avatar-hd-png-download.png',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +48,6 @@ export class ProfileCreationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("phoneNumber:", this.phoneNumber);
     this.initForm();
   }
 
@@ -50,7 +55,7 @@ export class ProfileCreationComponent implements OnInit {
     this.ProfileForm = this.fb.group({
       username: ['', Validators.required],
       phone: [{ value: this.phoneNumber, disabled: true }],
-      email: ['', Validators.required],
+      nickname: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
     });
@@ -61,12 +66,17 @@ export class ProfileCreationComponent implements OnInit {
       this.loading = true;
       console.log('Form submitted!', this.ProfileForm.value);
 
+      const avatarUrl = this.avatars[Math.floor(Math.random() * this.avatars.length)];
+
       const userData = {
         username: this.ProfileForm.get('username')?.value,
         phone: this.ProfileForm.get('phone')?.value,
-        email: this.ProfileForm.get('email')?.value,
+        nickname: this.ProfileForm.get('nickname')?.value,
         password: this.ProfileForm.get('password')?.value,
+        avatar_url: avatarUrl
       };
+
+      console.log('User data:', userData);
 
       this.apiService.registerUser(userData).subscribe({
         next: (response) => {
@@ -75,12 +85,10 @@ export class ProfileCreationComponent implements OnInit {
           this.formSubmitted = true;
           this.cdr.detectChanges();
           this.authService.setAuthToken(response.token);
-          console.log('response.token =>', response.token);
-          this.router.navigate(['/main']); // Или на другой маршрут
+          this.router.navigate(['/main']);
         },
         error: (error) => {
           console.error('Failed to register user:', error);
-          // Handle registration error
           this.loading = false;
           this.cdr.detectChanges();
         }
@@ -90,15 +98,13 @@ export class ProfileCreationComponent implements OnInit {
     }
   }
 
+
   private collectErrorMessages(): string[] {
     const messages: string[] = [];
     Object.keys(this.ProfileForm.controls).forEach((key: string) => {
       const control = this.ProfileForm.get(key);
       if (control?.errors) {
-        console.log("error:", control?.errors);
-
         Object.keys(control.errors).forEach((errorKey: string) => {
-          console.log("errorKey:", errorKey);
           this.show = true;
           messages.push(this.getErrorMessage(key, errorKey));
         });
@@ -110,8 +116,7 @@ export class ProfileCreationComponent implements OnInit {
   getErrorMessage(controlName: string, errorKey: string): string {
     const errorMessages: { [key: string]: string } = {
       'username.required': 'Username is required.',
-      'email.required': 'Email is required.',
-      'email.email': 'Invalid email format.',
+      'nickname.required': 'Nickname is required.',
       'password.required': 'Password is required.',
       'confirmPassword.required': 'Confirm password is required.'
     };

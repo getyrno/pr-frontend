@@ -1,0 +1,28 @@
+<!-- Контейнер для содержимого -->
+<div style="display: flex; align-items: flex-end; flex: 1; max-height: 220px;">
+  <!-- Иконка вложения -->
+  <div style="height: 40px; width: 40px; display: flex; justify-content: center; align-items: center;">
+    <img [src]="'../../../../../assets/attach.svg'" alt="Attach" style="cursor: pointer; width: 30px; height: 30px;">
+  </div>
+
+  <!-- Поле ввода -->
+  <div style="flex: 1; display: flex; align-items: flex-end;">
+    <form [formGroup]="chatForm" style="width: 100%; margin-bottom: 5px; margin-top: 5px;" (ngSubmit)="onSubmit()">
+      <app-custom-textarea
+        formControlName="message"
+        [maxHeight]="'190px'"
+        [backgroundColor]="'#ffffff'"
+        [textColor]="'#000000'"
+        [fontFamily]="'Manrope, sans-serif;'"
+        [fontSize]="'14px'"
+        [placeholder]="'write something'"
+        (keydown)="onKeyDown($event)"
+      ></app-custom-textarea>
+    </form>
+  </div>
+
+  <!-- Иконка отправки -->
+  <div style="height: 40px; width: 40px; display: flex; justify-content: center; align-items: center;">
+    <img [src]="'../../../../../assets/send.svg'" alt="Send" style="cursor: pointer; width: 30px; height: 30px;" (click)="onSubmit()">
+  </div>
+</div>

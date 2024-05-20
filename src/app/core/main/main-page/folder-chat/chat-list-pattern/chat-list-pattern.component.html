@@ -1,0 +1,73 @@
+<!-- chat-list-pattern.component.html -->
+<div *ngFor="let chat of personalChats" class="custom-container" (click)="selectChat(chat)" [ngClass]="{ 'selected': (selectedUserService.selectedChat$ | async)?.id === chat.id }">
+  <div style="display: flex; align-items: center; position: relative; width: 450px; height: 70px;">
+    <div style="position: relative; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+      <tui-avatar [src]="getAvatarUrl(chat)"></tui-avatar>
+      <img src="../../../../../assets/status-active.svg" alt="Status" class="status-icon" />
+    </div>
+    <div class="text-container" style="font-family: 'Manrope', sans-serif; text-align: left; flex: 1;">
+      <div style="font-size: 20px;">{{ getUserNickname(chat) }}</div>
+    </div>
+    <div style="position: absolute; top: 0; right: 0; padding: 10px; display: flex; align-items: center;">
+      <!-- Дополнительные элементы -->
+    </div>
+  </div>
+</div>
+
+<!-- Групповые чаты -->
+<div *ngFor="let chat of groupChats" class="custom-container" (click)="selectChat(chat)" [ngClass]="{ 'selected': (selectedUserService.selectedChat$ | async)?.id === chat.id }">
+  <div style="display: flex; align-items: center; position: relative; width: 450px; height: 70px;">
+    <div style="position: relative; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+      <tui-avatar [src]="getAvatarUrl(chat)"></tui-avatar>
+    </div>
+    <div class="text-container" style="font-family: 'Manrope', sans-serif; text-align: left; flex: 1;">
+      <div style="font-size: 20px;">{{ getChatName(chat) }}</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div *ngFor="let chat of chats" class="custom-container" (click)="selectUser(user)" [ngClass]="{ 'selected': (selectedUserService.selectedUser$ | async) === user }">
+  <div style="display: flex; align-items: center; position: relative; width: 450px; height: 70px;">
+    <div style="position: relative; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
+      <tui-avatar [src]="user.avatar_url"></tui-avatar>
+      <img src="../../../../../assets/status-active.svg" alt="Status" class="status-icon" />
+    </div>
+    <div class="text-container" style="font-family: 'Manrope', sans-serif; text-align: left; flex: 1;">
+      <div style="font-size: 20px;">{{ user.nickname }}</div>
+    </div>
+    <div style="position: absolute; top: 0; right: 0; padding: 10px; display: flex; align-items: center;"> -->
+      <!-- <img src="../../../../../assets/{{ user.checkread }}" alt="Logo" style="cursor: pointer; width: 20px; height: 20px;"> -->
+      <!-- <div style="margin-left: 5px;">{{ user.time }}</div> -->
+    <!-- </div>
+  </div>
+</div> -->
+
+
+
+<!-- <div style="position: relative;">
+  <tui-svg src="tuiIconCheck" style="cursor: pointer; width: 10px; height: 10px; font-size: 25px;"></tui-svg>
+  <tui-svg src="tuiIconCheck" style="cursor: pointer; width: 10px; height: 10px; font-size: 25px; position: absolute; left: 7px; top: 6px; z-index: 1;"></tui-svg>
+</div> -->
+
+
+

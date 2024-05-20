@@ -1,80 +1,59 @@
-
-<form
-class="b-form"
-[formGroup]="ProfileForm"
->
-  <tui-input formControlName="username" style="margin-top:20px">
-  Type an username
-  <input
-    tuiTextfield
-    type="text"
-  />
+<form class="b-form" [formGroup]="ProfileForm">
+  <tui-input formControlName="username" style="margin-top: 20px">
+    Type an username
+    <input tuiTextfield type="text" />
   </tui-input>
-  <tui-input formControlName="phone" style="margin-top:20px">
+  <tui-input formControlName="phone" style="margin-top: 20px">
     Your Phone
-    <input
-      tuiTextfield
-      type="phone"
-      [readonly]="true"
-    >
-    </tui-input>
-  <tui-input formControlName="email" style="margin-top:20px">
-    Type an email
-    <input
-        tuiTextfield
-        type="email"
-    />
+    <input tuiTextfield type="phone" [readonly]="true" />
   </tui-input>
-  <tui-input formControlName="password" style="margin-top:20px">
+  <tui-input formControlName="nickname" style="margin-top: 20px">
+    Type a nickname
+    <input tuiTextfield type="text" />
+  </tui-input>
+  <tui-input formControlName="password" style="margin-top: 20px">
     Type password
-    <input
-        tuiTextfield
-        type="password"
-    />
+    <input tuiTextfield type="password" />
   </tui-input>
-  <tui-input formControlName="confirmPassword" style="margin-top:20px">
+  <tui-input formControlName="confirmPassword" style="margin-top: 20px">
     Confirm password
-    <input
-        tuiTextfield
-        type="password"
-    />
+    <input tuiTextfield type="password" />
   </tui-input>
 </form>
 <div style="margin-top: 20px;">
-      <button
-        style="width:100%;"
-        appearance="accent"
-        tuiButton
-        type="button"
-        class="tui-space_bottom-5"
-        (click)="submitForm()"
-        [disabled]="loading"
-      >
-        <span [hidden]="loading">CREATE</span> <!-- Отображаем текст кнопки, если загрузчик не активен -->
-        <span style="margin-right: 10px;" [hidden]="!loading">WAIT</span> <!-- Отображаем текст кнопки, если загрузчик не активен -->
-        <tui-loader *ngIf="loading" [inheritColor]="true"></tui-loader> <!-- Отображаем загрузчик, если loading === true -->
-      </button>
+  <button
+    style="width: 100%;"
+    appearance="accent"
+    tuiButton
+    type="button"
+    class="tui-space_bottom-5"
+    (click)="submitForm()"
+    [disabled]="loading"
+  >
+    <span [hidden]="loading">CREATE</span>
+    <span style="margin-right: 10px;" [hidden]="!loading">WAIT</span>
+    <tui-loader *ngIf="loading" [inheritColor]="true"></tui-loader>
+  </button>
 </div>
 
 <ng-template
-    [tuiAlertOptions]="{
-      label: 'Error',
-      autoClose: true,
-      hasCloseButton: true,
-      status: 'error'
-    }"
-    [(tuiAlert)]="show"
-  >
+  [tuiAlertOptions]="{
+    label: 'Error',
+    autoClose: true,
+    hasCloseButton: true,
+    status: 'error'
+  }"
+  [(tuiAlert)]="show"
+>
   Passwords don't match
+</ng-template>
+
+<ng-container *ngIf="errorMessages.length > 0">
+  <ng-template
+    *ngFor="let errorMessage of errorMessages"
+    [(tuiAlert)]="show"
+    [tuiAlertOptions]="{ label: 'Error', autoClose: true, hasCloseButton: true, status: 'error' }"
+  >
+    {{ errorMessage }}
   </ng-template>
-
-
-  <ng-container *ngIf="errorMessages.length > 0">
-    <ng-template
-      *ngFor="let errorMessage of errorMessages"
-      [(tuiAlert)]="show"
-      [tuiAlertOptions]="{ label: 'Error', autoClose: true, hasCloseButton: true, status: 'error' }"
-    >
-      {{ errorMessage }}
-    </ng-template>
-  </ng-container>
+</ng-container>

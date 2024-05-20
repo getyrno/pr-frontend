@@ -1,0 +1,64 @@
+<!-- src/app/message/message-main-view/message-main-view.component.html -->
+<div>
+  <div *ngFor="let message of messages$ | async">
+    <div *ngIf="isCurrentUser(message); else otherMessage" class="message-container-right">
+      <div class="current-user">
+        <div class="message">
+          <div class="message-content">{{ message.content }}</div>
+        </div>
+        <div class="msg-info">
+          <div class="timestamp">{{ message.sent_at | date:'HH:mm' }}</div>
+        </div>
+      </div>
+    </div>
+    <ng-template #otherMessage>
+      <div class="message-container-left">
+        <div class="other-user">
+          <div class="message">
+            <div class="message-content">{{ message.content }}</div>
+          </div>
+          <div class="msg-info">
+            <div class="timestamp">{{ message.sent_at | date:'HH:mm' }}</div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<!-- <div>
+  <div *ngFor="let message of messages$ | async">
+    <div *ngIf="isCurrentUser(message); else otherMessage" class="message-container-right">
+      <div class="chat-msg-container">
+        <div class="chat-details">
+          <div class="chat-msg">
+            <p>{{ message.content }}</p>
+          </div>
+          <div class="chat-title">
+            <span class="time">{{ message.sent_at | date:'HH:mm' }}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <ng-template #otherMessage>
+      <div class="message-container-left">
+        <div class="chat-msg-container">
+          <div class="chat-details">
+            <div class="chat-title">
+              <h3>{{ message.sender_nickname }}</h3>
+              <span class="time">{{ message.sent_at | date:'HH:mm' }}</span>
+            </div>
+            <div class="chat-msg">
+              <p>{{ message.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div> -->
+
+
+

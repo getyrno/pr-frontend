@@ -1,0 +1,260 @@
+
+
+
+
+.message-container-right,
+.message-container-left {
+  display: flex;
+  justify-content: space-between; /* Размещаем элементы по горизонтали */
+}
+
+.message-container-right {
+  justify-content: flex-end;
+}
+
+.current-user, .other-user {
+  position: relative;
+  max-width: 400px;
+  word-wrap: break-word;
+  margin: 5px 0px 0px 0px;
+}
+
+
+
+.timestamp {
+  font-size: 0.75rem; /* Размер шрифта для времени */
+  color: rgba(255, 255, 255, 0.75); /* Цвет текста для времени */
+  margin-left: 10px; /* Отступ слева для времени */
+}
+
+// время
+.current-user .timestamp {
+  position: relative;
+  margin-bottom: 1px;
+  margin-right: 1px;
+}
+.other-user .timestamp {
+  color: rgba(84, 110, 122, 1.0); /* Цвет текста для времени собеседника */
+  position: relative;
+  margin-bottom: 1px;
+  margin-right: 1px;
+}
+
+
+.current-user {
+  background-color: #42a5f5; /* Цвет фона для текущего пользователя */
+  color: white; /* Цвет текста для текущего пользователя */
+  border-radius: 20px 20px 3px 20px; /* Скругленные углы */
+  justify-content: space-between; /* Размещаем элементы по горизонтали */
+  padding: 10px 5px 0px 10px;
+}
+
+.other-user {
+  background-color: #f1f1f1; /* Цвет фона для собеседника */
+  color: black; /* Цвет текста для собеседника */
+  border-radius: 20px 20px 20px 3px; /* Скругленные углы */
+  justify-content: space-between; /* Размещаем элементы по горизонтали */
+  padding: 10px 5px 0px 10px;
+}
+
+.msg-info {
+  display: flex;
+	position: absolute;
+	right: 10px;
+	bottom: 0px;
+	color: #AAA;
+}
+
+.message {
+  display: flex;
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+
+.message-content {
+
+}
+
+.msg {
+	position: relative;
+	width: auto;
+	min-width: 100px;
+	max-width: 45%;
+	height: auto;
+	padding: 10px;
+	padding-bottom: 10px;
+	margin: 10px 5px;
+	margin-bottom: 0px;
+	background: #f1f1f1;
+	border-radius: 7px;
+	clear: both;
+}
+
+.msg:nth-last-child(1) {
+	margin-bottom: 20px;
+}
+
+.msg .timestamp {
+	display: block;
+	position: absolute;
+	right: 10px;
+	bottom: 6px;
+	color: #AAA;
+	user-select: none;
+}
+
+messageReceived {
+	float: left;
+	background: #f1f1f1;
+}
+
+.messageSent {
+	float: right;
+	background: #42a5f5;
+}
+
+.messageSent > .timestamp, .messageSent > .readStatus {
+	bottom: 10px;
+	right: 40px;
+	color: darkgreen;
+	user-select: none;
+}
+
+.messageSent > .readStatus {
+	position: absolute;
+	bottom: 10px;
+	right: 12px;
+}
+
+
+.convHistory {
+	float: left;
+	position: relative;
+	width: 100%;
+	height: 200px;
+	overflow-x: hidden;
+}
+// // Контейнеры для сообщений (для сообщений текущего пользователя и собеседников)
+// .message-container-right,
+// .message-container-left {
+//   display: flex;  // Используем flexbox для размещения элементов
+//   justify-content: flex-start;  // Выравниваем элементы по началу (левому краю)
+//   align-items: flex-end;  // Выравниваем элементы по нижнему краю
+//   margin: 5px 0;  // Отступы сверху и снизу для каждого сообщения
+// }
+
+// // Контейнер для сообщений текущего пользователя
+// .message-container-right {
+//   justify-content: flex-end;  // Выравниваем элементы по концу (правому краю)
+// }
+
+// // Общие стили для сообщений текущего пользователя и собеседников
+// .chat-msg-container {
+//   position: relative;  // Позволяет использовать позиционирование для вложенных элементов
+//   max-width: 400px;  // Максимальная ширина сообщения
+//   word-wrap: break-word;  // Перенос длинных слов на следующую строку
+//   padding: 3px;  // Внутренние отступы
+//   margin: 5px 0;  // Отступы сверху и снизу
+//   background-color: #f1f1f1;  // Фоновый цвет
+//   border-radius: 15px;  // Скругление углов
+// }
+
+// // Специальные стили для сообщений текущего пользователя
+// .message-container-right .chat-msg-container {
+//   background-color: #42a5f5;  // Фоновый цвет для сообщений текущего пользователя
+//   color: white;  // Цвет текста для сообщений текущего пользователя
+// }
+
+// // Контейнер для деталей сообщения (заголовок и само сообщение)
+// .chat-details {
+//   display: flex;  // Используем flexbox для размещения элементов
+//   gap: 0.5rem;  // Промежуток между элементами
+// }
+
+// // Заголовок сообщения (включает имя отправителя и время)
+// .chat-title {
+//   display: flex;  // Используем flexbox для размещения элементов
+//   align-items: center;  // Выравниваем элементы по центру по вертикали
+//   justify-content: space-between;  // Размещаем элементы по краям
+// }
+
+// // Стили для имени отправителя
+// .chat-title h3 {
+//   font-size: 16px;  // Размер шрифта
+//   font-weight: 500;  // Жирность шрифта
+// }
+
+// // Стили для времени отправки сообщения
+// .chat-title .time {
+//   color: var(--grayColor);  // Цвет текста (используем переменную цвета)
+//   font-size: 14px;  // Размер шрифта
+// }
+
+// // Контейнер для текста сообщения
+// .chat-msg {
+//   display: flex;  // Используем flexbox для размещения элементов
+//   align-items: center;  // Выравниваем элементы по центру по вертикали
+//   justify-content: space-between;  // Размещаем элементы по краям
+// }
+
+// // Стили для текста сообщения
+// .chat-msg p {
+//   font-size: 16px;  // Размер шрифта
+//   color: var(--grayColor);  // Цвет текста (используем переменную цвета)
+// }
+
+// // Специальные стили для текста сообщений текущего пользователя
+// .message-container-right .chat-msg p {
+//   color: white;  // Цвет текста
+// }
+
+
+
+
+// .message-container-right,
+// .message-container-left {
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: flex-end;
+//   margin: 5px 0;
+// }
+
+// .message-container-right {
+//   justify-content: flex-end;
+// }
+
+// .current-user, .other-user {
+//   position: relative;
+//   max-width: 400px;
+//   word-wrap: break-word;
+//   padding: 10px;
+//   margin: 5px 0;
+// }
+
+// .current-user {
+//   background-color: #42a5f5;
+//   color: white;
+//   border-radius: 10px 10px 0px 10px;
+// }
+
+// .other-user {
+//   background-color: #f1f1f1;
+//   color: black;
+//   border-radius: 10px 10px 10px 0px;
+
+// }
+
+// .timestamp {
+//   display: block;
+//   position: absolute;
+//   right: 10px;
+//   bottom: 0px;
+//   font-size: 0.75rem;
+//   color: rgba(84, 110, 122, 1.0);
+// }
+
+// .current-user .timestamp {
+//   color: rgba(255, 255, 255, 0.75);
+// }
+
+
