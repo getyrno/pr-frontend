@@ -1,3 +1,4 @@
+import { SocketService } from './core/services/socketService/socket.service';
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { TuiRootModule } from '@taiga-ui/core';
@@ -25,7 +26,8 @@ export class AppComponent {
     private router: Router,
     private authService: AuthService,
     private apiService: ApiService,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +41,9 @@ export class AppComponent {
             (user) => {
               this.currentUserService.setCurrentUser(user);
               this.currentUserService.setCurrentUserId(userdata.userId);
+              localStorage.setItem('userId', userdata.userId);
+              this.socketService.userConnected(userdata.userId);
+
               this.router.navigate(['/main']);
             },
             (error) => {

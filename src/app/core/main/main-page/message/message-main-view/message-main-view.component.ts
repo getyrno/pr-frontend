@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -9,16 +9,19 @@ import { User } from '../../../../models/user.model';
 import { GroupChat } from '../../../../models/group-chat.model';
 import { SelectedUserService } from '../../../../services/selectedUser/selected-user.service';
 import { CurrentUserService } from '../../../../services/currentUserService/current-user.service';
+import { TuiScrollbarModule } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-message-main-view',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, TuiScrollbarModule],
   templateUrl: './message-main-view.component.html',
   styleUrls: ['./message-main-view.component.scss'],
   providers: [DatePipe]
 })
-export class MessageMainViewComponent implements OnInit, OnDestroy {
+export class MessageMainViewComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('messagesList') private messagesList: ElementRef | undefined;
+
   messages$: Observable<Message[]>;
   private chatSubscription: Subscription | undefined;
   private userSubscription: Subscription | undefined;
@@ -38,24 +41,16 @@ export class MessageMainViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const userId = parseInt(localStorage.getItem('userId') || '0', 10);
-
     this.currentUser = parseInt(localStorage.getItem('userId') || '0', 10);
     console.log('Current user:', this.currentUser);
 
     this.userSubscription = this.selectedUserService.selectedUser$.subscribe({
       next: (user) => {
         console.log('Selected user:', user);
-        if (user && Object.keys(user).length !== 0) {
-          this.selectedUser = user;
-          this.detectChanges();
-        } else {
-          this.selectedUser = null;
-        }
+        this.selectedUser = user;
+        this.detectChanges();
       },
-      error: (error) => {
-        console.error('Error fetching selected user:', error);
-      }
+      error: (error) => console.error('Error fetching selected user:', error)
     });
 
     this.chatSubscription = this.selectedUserService.selectedChat$.subscribe({
@@ -64,12 +59,10 @@ export class MessageMainViewComponent implements OnInit, OnDestroy {
         if (chat) {
           this.selectedChat = chat;
           if (chat.id !== this.loadedChatId) {
-            console.log(`Chat changed from ${this.loadedChatId} to ${chat.id}`);
             this.loadedChatId = chat.id;
             this.isLoading = true;
             this.messageService.clearMessages();
             this.loadMessagesForChat(chat.id);
-            this.messageService.joinRoom(chat.id);
             this.detectChanges();
           }
         } else {
@@ -78,10 +71,12 @@ export class MessageMainViewComponent implements OnInit, OnDestroy {
           this.messageService.clearMessages();
         }
       },
-      error: (error) => {
-        console.error('Error fetching selected chat:', error);
-      }
+      error: (error) => console.error('Error fetching selected chat:', error)
     });
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   ngOnDestroy() {
@@ -97,12 +92,8 @@ export class MessageMainViewComponent implements OnInit, OnDestroy {
         this.detectChanges();
       }))
       .subscribe({
-        next: (messages) => {
-          console.log('Messages loaded:', messages);
-        },
-        error: (error) => {
-          console.error('Error loading messages:', error);
-        }
+        next: (messages) => console.log('Messages loaded:', messages),
+        error: (error) => console.error('Error loading messages:', error)
       });
   }
 
@@ -114,4 +105,14 @@ export class MessageMainViewComponent implements OnInit, OnDestroy {
     const senderId = message.user_id;
     return !!this.currentUser && this.currentUser === senderId;
   }
+
+  scrollToBottom(): void {
+    try {
+      this.messagesList?.nativeElement.scrollTo(0, this.messagesList.nativeElement.scrollHeight);
+    } catch(err) {
+      console.error('Scroll to bottom failed:', err);
+    }
+  }
+
+
 }

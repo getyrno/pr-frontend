@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, AfterViewInit, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TuiTextfieldControllerModule, TuiSvgModule } from '@taiga-ui/core';
 import { TuiAppearanceModule } from '@taiga-ui/experimental';
@@ -53,9 +53,7 @@ export class MessageBottomPanelComponent implements OnInit {
         this.currentUserService.setCurrentUserId(userId);
         console.log("MessageBottomPanelComponent user", user)
       })
-
   }
-
 
   onSubmit() {
     const userId = parseInt(localStorage.getItem('userId') || '0', 10);
@@ -63,11 +61,12 @@ export class MessageBottomPanelComponent implements OnInit {
     const chatId = selectedChat ? +selectedChat.id : null;
     const messageControl = this.chatForm.get('message');
     const message = messageControl?.value?.trim() || '';
-    if (messageControl && messageControl.valid && message  && chatId !== null && userId !== null) {
-
-      this.messageService.sendMessage(message, chatId);
+    if (messageControl && messageControl.valid && message && chatId !== null && userId !== null) {
+      const formattedMessage = this.formatMessageAsHtml(message);
+      this.messageService.sendMessage(formattedMessage, chatId);
       this.chatForm.reset();
       messageControl.setValue('');
+      this.resetTextareaHeight();
     }
   }
 
@@ -76,5 +75,18 @@ export class MessageBottomPanelComponent implements OnInit {
       event.preventDefault();
       this.onSubmit();
     }
+  }
+
+  resetTextareaHeight() {
+    const textareaEl = document.querySelector('.custom-textarea') as HTMLTextAreaElement;
+    if (textareaEl) {
+      textareaEl.style.height = '0';
+      textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    }
+  }
+
+  formatMessageAsHtml(message: string): string {
+    // Заменяем переводы строк на <br> теги для HTML формата
+    return message.replace(/\n/g, '<br>');
   }
 }

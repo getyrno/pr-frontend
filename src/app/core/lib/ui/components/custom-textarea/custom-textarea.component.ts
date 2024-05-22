@@ -17,8 +17,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class CustomTextareaComponent implements ControlValueAccessor, AfterViewInit {
   @ViewChild('textarea') textarea!: ElementRef;
 
-  @Input() minHeight: string = '';
-  @Input() maxHeight: string = '24px';
+  @Input() minHeight: string = '21px';
+  @Input() maxHeight: string = '180px';
   @Input() border: string = 'none';
   @Input() backgroundColor: string = '#f0f0f0';
   @Input() textColor: string = '#333';
@@ -65,8 +65,7 @@ export class CustomTextareaComponent implements ControlValueAccessor, AfterViewI
     this.onTouched();
   }
 
-  onFocus(): void {
-  }
+  onFocus(): void {}
 
   updateTextareaHeight(): void {
     const textareaEl = this.textarea.nativeElement;

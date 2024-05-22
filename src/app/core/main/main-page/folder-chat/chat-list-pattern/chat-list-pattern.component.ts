@@ -1,3 +1,4 @@
+import { SocketService } from './../../../../services/socketService/socket.service';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TuiSvgModule } from '@taiga-ui/core';
@@ -33,7 +34,8 @@ export class ChatListPatternComponent implements OnChanges {
   constructor(
     public selectedUserService: SelectedUserService,
     private cdr: ChangeDetectorRef,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private socketService: SocketService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -52,7 +54,21 @@ export class ChatListPatternComponent implements OnChanges {
         console.log("otherUserId =>", otherUserId);
         if (otherUserId) {
           this.apiService.getUserById(otherUserId).subscribe((user: User) => {
+            console.log("loadUsersForChats user=>", user);
+            this.socketService.getUserStatus(user.id).subscribe({
+              next: (status) => {
+                if (status.userId === user.id) {
+                  user.status = status.status;
+                  this.cdr.markForCheck();
+                }
+              },
+              error: (error) => {
+                console.error('Error fetching user status:', error);
+              }
+            });
+            console.log("loadUsersForChats user=>", user.status);
             this.users[chat.id] = user;
+            console.log("loadUsersForChats this.users[chat.id]=>", this.users[chat.id]);
             this.cdr.markForCheck();
         });
       }
@@ -93,6 +109,18 @@ export class ChatListPatternComponent implements OnChanges {
     const otherUser = this.users[chat.id];
     return otherUser ? otherUser.nickname : 'User';
   }
+
+  getUserStatus(chat: Chat): string {
+    const otherUser = this.users[chat.id];
+    return otherUser ? otherUser.status : 'User';
+  }
+
+  // getUserStatus(chat: Chat): string {
+  //   const otherUser = this.users[chat.id];
+
+  //   const userStatus = this.socketService.getUserStatus(otherUser.id);
+  //   return userStatus ? otherUser.status : "offline";
+  // }
 
   getChatInfo(chat: Chat) {
     const user = this.users[chat.id];

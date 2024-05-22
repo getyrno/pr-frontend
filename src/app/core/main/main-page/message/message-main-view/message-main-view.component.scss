@@ -1,6 +1,15 @@
+.messages-container {
+  display: flex;
+  flex-direction: column; /* Чтобы новые сообщения добавлялись в конец */
+  height: 90vh;
+  overflow-y: hidden; /* Скроллбар для вертикальной прокрутки */
+}
 
-
-
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
 
 .message-container-right,
 .message-container-left {
@@ -19,27 +28,24 @@
   margin: 5px 0px 0px 0px;
 }
 
-
-
 .timestamp {
   font-size: 0.75rem; /* Размер шрифта для времени */
   color: rgba(255, 255, 255, 0.75); /* Цвет текста для времени */
   margin-left: 10px; /* Отступ слева для времени */
 }
 
-// время
 .current-user .timestamp {
   position: relative;
   margin-bottom: 1px;
   margin-right: 1px;
 }
+
 .other-user .timestamp {
   color: rgba(84, 110, 122, 1.0); /* Цвет текста для времени собеседника */
   position: relative;
   margin-bottom: 1px;
   margin-right: 1px;
 }
-
 
 .current-user {
   background-color: #42a5f5; /* Цвет фона для текущего пользователя */
@@ -59,10 +65,10 @@
 
 .msg-info {
   display: flex;
-	position: absolute;
-	right: 10px;
-	bottom: 0px;
-	color: #AAA;
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+  color: #AAA;
 }
 
 .message {
@@ -71,69 +77,42 @@
   margin-right: 50px;
 }
 
-.message-content {
-
-}
-
-.msg {
-	position: relative;
-	width: auto;
-	min-width: 100px;
-	max-width: 45%;
-	height: auto;
-	padding: 10px;
-	padding-bottom: 10px;
-	margin: 10px 5px;
-	margin-bottom: 0px;
-	background: #f1f1f1;
-	border-radius: 7px;
-	clear: both;
-}
-
-.msg:nth-last-child(1) {
-	margin-bottom: 20px;
-}
-
-.msg .timestamp {
-	display: block;
-	position: absolute;
-	right: 10px;
-	bottom: 6px;
-	color: #AAA;
-	user-select: none;
-}
-
-messageReceived {
-	float: left;
-	background: #f1f1f1;
-}
-
-.messageSent {
-	float: right;
-	background: #42a5f5;
-}
-
-.messageSent > .timestamp, .messageSent > .readStatus {
-	bottom: 10px;
-	right: 40px;
-	color: darkgreen;
-	user-select: none;
-}
-
-.messageSent > .readStatus {
-	position: absolute;
-	bottom: 10px;
-	right: 12px;
+/* Скрыть скроллбар по умолчанию */
+.messages-container::-webkit-scrollbar {
+  display: none;
 }
 
 
-.convHistory {
-	float: left;
-	position: relative;
-	width: 100%;
-	height: 200px;
-	overflow-x: hidden;
+
+.vertical-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 1em;
 }
+
+.vertical-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 5px;
+}
+
+.vertical-scroll::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 33%);
+  border-radius: 5px;
+}
+
+.vertical-scroll::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* Vertical scrolling */
+
+.vertical-scroll {
+  overflow-y: scroll;
+  position: relative;
+}
+
+.vertical-scroll > div {
+}
+
 // // Контейнеры для сообщений (для сообщений текущего пользователя и собеседников)
 // .message-container-right,
 // .message-container-left {

@@ -3,7 +3,7 @@
   <div style="display: flex; align-items: center; position: relative; width: 450px; height: 70px;">
     <div style="position: relative; width: 70px; height: 70px; display: flex; justify-content: center; align-items: center;">
       <tui-avatar [src]="getAvatarUrl(chat)"></tui-avatar>
-      <img src="../../../../../assets/status-active.svg" alt="Status" class="status-icon" />
+      <img *ngIf="getUserStatus(chat) === 'online'" src="../../../../../assets/status-active.svg" alt="Status" class="status-icon" />
     </div>
     <div class="text-container" style="font-family: 'Manrope', sans-serif; text-align: left; flex: 1;">
       <div style="font-size: 20px;">{{ getUserNickname(chat) }}</div>

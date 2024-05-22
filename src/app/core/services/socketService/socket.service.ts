@@ -9,6 +9,7 @@ import { Observable, Subject } from 'rxjs';
 export class SocketService {
   private socket: Socket;
   private messageSubject = new Subject<any>();
+  private statusSubject = new Subject<any>();
 
   constructor() {
     this.socket = io('http://localhost:3000', {
@@ -21,6 +22,11 @@ export class SocketService {
     this.socket.on('message', (message: any) => {
       console.log('Message received:', message);
       this.messageSubject.next(message);
+    });
+
+    this.socket.on('user_status', (status: any) => {
+      console.log('User status received:', status);
+      this.statusSubject.next(status);
     });
   }
 
@@ -47,5 +53,24 @@ export class SocketService {
   disconnect() {
     console.log('Disconnecting socket');
     this.socket.disconnect();
+  }
+
+  userConnected(userId: number): void {
+    this.socket.emit('user_connected', userId);
+  }
+
+  // Метод для получения обновленного списка пользователей
+  getUserList(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('update_user_list', (users) => {
+        console.log('update_user_list',users);
+        observer.next(users);
+      });
+    });
+  }
+
+  getUserStatus(userId: number): Observable<any> {
+    this.socket.emit('get_status', userId);
+    return this.statusSubject.asObservable();
   }
 }

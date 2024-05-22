@@ -65,9 +65,6 @@ export class MessageService {
     }
   }
 
-  joinRoom(chatId: number) {
-    this.socketService.joinRoom(chatId.toString());
-  }
 
   getUserInfo(userId: number): Observable<User> {
     return this.apiService.getUserById(userId);
