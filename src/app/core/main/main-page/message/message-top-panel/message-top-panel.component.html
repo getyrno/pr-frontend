@@ -15,7 +15,9 @@
     <div class="text-container">
       <div *ngIf="selectedUser">
         <div class="user-name">{{ selectedUser.nickname }}</div>
-        <div class="user-status">{{ userStatus }}</div>
+        <div class="user-status" *ngIf="selectedUser.status === 'online'">{{ selectedUser.status }}</div>
+        <div class="user-status" *ngIf="selectedUser.status === 'offline'">{{ selectedUser.last_seen }}</div>
+<!--        <div class="user-status" *ngIf="userStatus !== 'online' && last_seen === null">null</div>-->
       </div>
     </div>
   </div>

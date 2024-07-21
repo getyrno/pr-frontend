@@ -80,6 +80,21 @@ export class ApiService {
       catchError(this.handleError)
     );
   }
+
+  getInfoAboutPerson(id: number): Observable<User> {
+    console.log("ApiService getUserInfo called"); // Логирование вызова метода
+    const authToken = this.authService.getAuthToken();
+    const personId = id;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    console.log("getUserInfo headers =>", headers.get('Authorization')); // Логирование заголовка
+    return this.http.get<User>(`${this.baseUrl}/protected/info/${personId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
   createChat(userIds: number[]): Observable<Chat> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

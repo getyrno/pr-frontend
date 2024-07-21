@@ -1,9 +1,14 @@
+// src/app/models/user.model.ts
 export interface User {
   id: number;
-  name: string;
-  status: any;
+  phone_number: string;
+  username: string;
+  password: string;
   avatar_url: string;
   nickname: string;
-  phone: string;
-  username: string;
+  status: string;
+  last_seen: Date | null;
+  isdeleted: boolean;
+  created_at: Date;
+  updated_at: Date;
 }

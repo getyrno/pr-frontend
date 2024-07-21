@@ -4,4 +4,3 @@ export interface Chat {
   user_ids: number[];
   created_at: Date;
 }
-

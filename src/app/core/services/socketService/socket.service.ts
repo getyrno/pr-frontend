@@ -1,12 +1,12 @@
 // src/app/services/socket.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SocketService {
+export class SocketService implements OnDestroy {
   private socket: Socket;
   private messageSubject = new Subject<any>();
   private statusSubject = new Subject<any>();
@@ -27,6 +27,14 @@ export class SocketService {
     this.socket.on('user_status', (status: any) => {
       console.log('User status received:', status);
       this.statusSubject.next(status);
+    });
+
+    // Обработка событий beforeunload и unload
+    window.addEventListener('beforeunload', () => {
+      this.disconnect();
+    });
+    window.addEventListener('unload', () => {
+      this.disconnect();
     });
   }
 
@@ -52,6 +60,7 @@ export class SocketService {
 
   disconnect() {
     console.log('Disconnecting socket');
+    this.socket.emit('user_disconnected');
     this.socket.disconnect();
   }
 
@@ -59,11 +68,10 @@ export class SocketService {
     this.socket.emit('user_connected', userId);
   }
 
-  // Метод для получения обновленного списка пользователей
   getUserList(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('update_user_list', (users) => {
-        console.log('update_user_list',users);
+        console.log('update_user_list', users);
         observer.next(users);
       });
     });
@@ -72,5 +80,9 @@ export class SocketService {
   getUserStatus(userId: number): Observable<any> {
     this.socket.emit('get_status', userId);
     return this.statusSubject.asObservable();
+  }
+
+  ngOnDestroy() {
+    this.disconnect();
   }
 }

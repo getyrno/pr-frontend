@@ -6,4 +6,3 @@ export interface GroupChat {
   user_ids: number[];
   created_at: Date;
 }
-

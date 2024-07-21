@@ -48,13 +48,16 @@ export class MessageService {
     console.log("user 3", user)
 
     if (user && chatId) {
+      // Пример использования модели Message
       const message: Message = {
-        id: Date.now().toString(), // временный идентификатор
-        chatId,
+        id: Date.now(), // временный идентификатор как число
+        chat_id: chatId,
         user_id: user.id,
-        sender_nickname: user.nickname, // добавляем nickname
+        sender_nickname: user.nickname,
         content: content,
-        sent_at: new Date().toISOString() // Отправляем текущее время в формате ISO 8601
+        sent_at: new Date(), // Отправляем текущее время как объект Date
+        is_read: false, // По умолчанию сообщение не прочитано
+        is_deleted: false // По умолчанию сообщение не удалено
       };
       console.log("MessageService message =>", message);
 

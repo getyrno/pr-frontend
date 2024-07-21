@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, Input} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TuiSvgModule } from '@taiga-ui/core';
 import { User } from '../../../../models/user.model';
@@ -18,9 +18,11 @@ import { SocketService } from '../../../../services/socketService/socket.service
 export class MessageTopPanelComponent implements OnInit, OnDestroy {
   selectedUser: User | null = null;
   userStatus: string | null = null;
+  last_seen: any = null;
   private subscription: Subscription | undefined;
   private statusSubscription: Subscription | undefined;
   private socketSubscription: Subscription | undefined;
+  @Input() user!: User | undefined;
 
   constructor(
     private selectedUserService: SelectedUserService,
@@ -32,7 +34,16 @@ export class MessageTopPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.selectedUserService.selectedUser$.subscribe({
       next: (user) => {
+        // console.log('ngOnInit USER SELECT', this.user);
+
         console.log('Selected user:', user);
+        this.selectedUser = user;
+
+        // console.log('Selected user:', this.user);
+
+        // this.last_seen = user?.last_seen
+        // console.log(this.last_seen)
+
         if (user && Object.keys(user).length !== 0) {
           this.selectedUser = user;
           this.getStatusInfo(this.selectedUser);
@@ -74,6 +85,9 @@ export class MessageTopPanelComponent implements OnInit, OnDestroy {
       next: (status) => {
         if (status.userId === this.selectedUser?.id) {
           this.userStatus = status.status;
+          if (this.userStatus === "offline") {
+            // this.last_seen = this.user?.last_seen
+          }
           this.cdr.markForCheck();
         }
       },

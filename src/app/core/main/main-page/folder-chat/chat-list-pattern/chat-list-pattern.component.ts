@@ -29,8 +29,10 @@ export class ChatListPatternComponent implements OnChanges {
   @Input() personalChats: Chat[] = [];
   @Input() groupChats: GroupChat[] = [];
   users: { [chatId: number]: User } = {};
-  userId: number | undefined;
+  usersList: User[] = [];
 
+  userId: number | undefined;
+  user: User | undefined;
   constructor(
     public selectedUserService: SelectedUserService,
     private cdr: ChangeDetectorRef,
@@ -53,8 +55,9 @@ export class ChatListPatternComponent implements OnChanges {
         const otherUserId = chat.user_ids.find(id => id !== this.userId);
         console.log("otherUserId =>", otherUserId);
         if (otherUserId) {
-          this.apiService.getUserById(otherUserId).subscribe((user: User) => {
+          this.apiService.getInfoAboutPerson(otherUserId).subscribe((user: User) => {
             console.log("loadUsersForChats user=>", user);
+            this.usersList.push(user);
             this.socketService.getUserStatus(user.id).subscribe({
               next: (status) => {
                 if (status.userId === user.id) {
@@ -82,16 +85,33 @@ export class ChatListPatternComponent implements OnChanges {
         console.log("Current user =>", currentUser);
         console.log("Current Chat =>", chat);
         this.selectedUserService.selectChat(chat);
-        if (chat.user_ids.length = 2) {
-          const user = this.getChatInfo(chat);
-          this.selectedUserService.selectUser(user);
+
+        if (chat.user_ids && chat.user_ids.length === 2) {
+          const otherUserId = chat.user_ids.find(id => id !== currentUser.id);
+          if (otherUserId) {
+            const otherUser = this.usersList.find(user => user.id === otherUserId);
+            if (otherUser) {
+              this.selectedUserService.selectUser(otherUser);
+            } else {
+              this.apiService.getInfoAboutPerson(otherUserId).subscribe(
+                (user: User) => {
+                  this.usersList.push(user);
+                  this.selectedUserService.selectUser(user);
+                },
+                error => {
+                  console.error('Error fetching user info:', error);
+                }
+              );
+            }
+          }
         }
       },
       error => {
-        console.error('Error fetching user info:', error);
+        console.error('Error fetching current user info:', error);
       }
     );
   }
+
 
   getChatName(chat: GroupChat): string {
     return chat.name;
@@ -127,4 +147,17 @@ export class ChatListPatternComponent implements OnChanges {
     console.log("Current chatuser =>", user);
     return user
   }
+
+  private getInfoAboutPerson(id: number): void {
+    this.apiService.getInfoAboutPerson(id).subscribe(
+      user => {
+        console.log(user); // Обработка полученных данных пользователя
+        this.user = user;
+      },
+      error => {
+        console.error('Error fetching user info:', error); // Обработка ошибок
+      }
+    );
+  }
+
 }

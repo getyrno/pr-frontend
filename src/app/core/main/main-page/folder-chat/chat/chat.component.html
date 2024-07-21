@@ -1,7 +1,8 @@
 <div class="chat" style="display: flex; flex-direction: column; height: 100vh;">
   <section style="border-bottom: 1px solid #F2f2f2; height: 50px; flex: 0 0 auto;">
     <!-- Верхняя панель -->
-    <app-message-top-panel></app-message-top-panel>
+    <app-message-top-panel
+    [user]="user"></app-message-top-panel>
   </section>
 
   <section style="background-color: #ffffff;  flex: 1 1 auto; overflow-y: hidden;">
